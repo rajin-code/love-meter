@@ -15,6 +15,7 @@
     font-family:'Poppins', sans-serif;
 }
 
+/* Body & Cursor */
 body{
     height:100vh;
     display:flex;
@@ -37,35 +38,40 @@ body{
     transform:translate(-50%,-50%);
 }
 
+/* Container & Elements */
 .container{
     text-align:center;
     backdrop-filter: blur(15px);
     background: rgba(255,255,255,0.15);
-    padding:40px 60px;
+    padding:20px 20px; /* Mobile-friendly base */
     border-radius:25px;
-    box-shadow:0 15px 35px rgba(0,0,0,0.2);
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    width:90%;
 }
 
 h1{
     font-family:'Pacifico', cursive;
-    font-size:38px;
-    margin-bottom:20px;
+    font-size:22px; /* Mobile base */
+    margin-bottom:15px;
     color:white;
+    text-shadow:0 3px 10px rgba(0,0,0,0.3);
 }
 
 input{
-    padding:10px;
+    padding:8px;
     border-radius:20px;
     border:none;
-    margin-bottom:15px;
+    margin-bottom:10px;
     text-align:center;
     outline:none;
+    width:90%;
+    font-size:14px;
 }
 
 button{
-    padding:10px 25px;
-    margin:8px;
-    font-size:16px;
+    padding:6px 15px;
+    margin:5px;
+    font-size:14px;
     border:none;
     border-radius:25px;
     cursor:pointer;
@@ -87,6 +93,7 @@ button{
     position:absolute;
 }
 
+/* Love meter */
 .meter{
     width:100%;
     height:20px;
@@ -101,6 +108,30 @@ button{
     width:0%;
     background:linear-gradient(90deg,#ff4d6d,#ff758f);
     transition:1s;
+}
+
+/* Responsive tweaks */
+
+/* Tablet (481–1024px) */
+@media (min-width:481px) and (max-width:1024px){
+    .container{
+        padding:40px 60px;
+        max-width:600px;
+    }
+    h1{ font-size:32px; }
+    input{ font-size:16px; width:80%; }
+    button{ font-size:16px; padding:10px 25px; }
+}
+
+/* PC / Large screens (>1024px) */
+@media (min-width:1025px){
+    .container{
+        padding:60px 100px;
+        max-width:800px;
+    }
+    h1{ font-size:42px; }
+    input{ font-size:18px; width:70%; }
+    button{ font-size:18px; padding:12px 30px; }
 }
 </style>
 </head>
@@ -129,7 +160,7 @@ const fill = document.getElementById("loveFill");
 const question = document.getElementById("question");
 const nameInput = document.getElementById("nameInput");
 
-// Runaway button
+// Runaway "No" button
 function moveButton(){
     const x = Math.random() * (window.innerWidth - 100);
     const y = Math.random() * (window.innerHeight - 50);
@@ -147,18 +178,33 @@ yesBtn.addEventListener("click", function(){
     💘 My world is brighter because of you! 😌`;
     fill.style.width = "100%";
 
+    // Confetti animation
     confetti({
         particleCount:150,
         spread:100,
         origin:{ y:0.6 }
     });
-});
 
-// WhatsApp Share
-function share(){
-    const text = "I just tested my Love Meter 💖 Try it now!";
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
-}
+    // Floating hearts animation
+    for(let i=0;i<20;i++){
+        const heart = document.createElement("div");
+        heart.innerHTML = "❤️";
+        heart.style.position = "absolute";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = window.innerHeight + "px";
+        heart.style.fontSize = (20 + Math.random()*30) + "px";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),3000);
+    }
+
+    // Background gradient animation
+    let colors = ["#ff758c","#ff7eb3","#ff9a9e","#fad0c4"];
+    let i = 0;
+    setInterval(()=>{
+        document.body.style.background = `linear-gradient(135deg,${colors[i]},${colors[(i+1)%colors.length]})`;
+        i = (i+1)%colors.length;
+    }, 2000);
+});
 
 // Cursor glow
 const cursor = document.getElementById("cursor");
