@@ -110,11 +110,10 @@ button{
 <div class="cursor" id="cursor"></div>
 
 <div class="container">
-    <h1 id="question">Do you love me? 💖</h1>
+    <h1 id="question">Do you love me ( Rajin )? 💖</h1>
     <input type="text" id="nameInput" placeholder="Enter your name 😏">
     <br>
     <button id="yes">Yes ❤️</button>
-    <button onclick="share()">Share 🔗</button>
 
     <div class="meter">
         <div class="fill" id="loveFill"></div>
@@ -143,7 +142,9 @@ noBtn.addEventListener("touchstart", moveButton);
 // Yes button action
 yesBtn.addEventListener("click", function(){
     const name = nameInput.value || "Someone Special";
-    question.innerHTML = `💘 ${name}, Love Level 100%! 💘`;
+    question.innerHTML = `💘 Really !!! I can't believe it. 🥹 ${name}, every heartbeat whispers your name… 💖<br>
+    🌹 The stars envy our love, and the moon smiles for us… 🌙<br>
+    💘 My world is brighter because of you! 😌`;
     fill.style.width = "100%";
 
     confetti({
