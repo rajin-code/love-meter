@@ -1,231 +1,187 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Love Meter 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Calculator</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins', sans-serif;
+:root {
+    --primary: #ff3366;
+    --secondary: #ff85a2;
 }
 
-/* Body & Cursor */
-body{
+body {
+    margin:0;
+    font-family:'Poppins',sans-serif;
     height:100vh;
     display:flex;
-    justify-content:center;
     align-items:center;
-    background: linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb);
+    justify-content:center;
+    background:linear-gradient(to bottom,#ff4e50,#fc913a);
     overflow:hidden;
-    transition:0.5s;
-    cursor:none;
+    color:white;
 }
 
-.cursor{
-    width:20px;
-    height:20px;
-    border-radius:50%;
-    position:absolute;
-    pointer-events:none;
-    background:radial-gradient(circle,#ff4d6d,#ff758f);
-    box-shadow:0 0 20px #ff4d6d;
-    transform:translate(-50%,-50%);
-}
-
-/* Container & Elements */
 .container{
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(25px);
+    padding:40px;
+    border-radius:30px;
     text-align:center;
-    backdrop-filter: blur(15px);
-    background: rgba(255,255,255,0.15);
-    padding:20px 20px; /* Mobile-friendly base */
-    border-radius:25px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.2);
     width:90%;
+    max-width:400px;
 }
 
 h1{
-    font-family:'Pacifico', cursive;
-    font-size:22px; /* Mobile base */
-    margin-bottom:15px;
-    color:white;
-    text-shadow:0 3px 10px rgba(0,0,0,0.3);
+    font-family:'Dancing Script',cursive;
+    font-size:2.5rem;
 }
 
 input{
-    padding:8px;
-    border-radius:20px;
+    width:100%;
+    padding:12px;
+    margin:10px 0;
     border:none;
-    margin-bottom:10px;
+    border-bottom:2px solid rgba(255,255,255,0.3);
+    background:transparent;
+    color:white;
     text-align:center;
-    outline:none;
-    width:90%;
-    font-size:14px;
 }
 
 button{
-    padding:6px 15px;
-    margin:5px;
-    font-size:14px;
-    border:none;
-    border-radius:25px;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-#yes{
-    background: linear-gradient(45deg,#ff4d6d,#ff758f);
-    color:white;
-}
-
-#yes:hover{
-    transform:scale(1.1);
-}
-
-#no{
-    background: rgba(0,0,0,0.6);
-    color:white;
-    position:absolute;
-}
-
-/* Love meter */
-.meter{
-    width:100%;
-    height:20px;
-    background:#ddd;
-    border-radius:20px;
     margin-top:15px;
-    overflow:hidden;
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(45deg,var(--primary),var(--secondary));
+    color:white;
+    cursor:pointer;
 }
 
-.fill{
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,#ff4d6d,#ff758f);
-    transition:1s;
+.percent{
+    font-size:3rem;
+    color:#ffeb3b;
 }
 
-/* Responsive tweaks */
+.heart{
+    position:absolute;
+    animation:fall linear forwards;
+}
 
-/* Tablet (481–1024px) */
-@media (min-width:481px) and (max-width:1024px){
-    .container{
-        padding:40px 60px;
-        max-width:600px;
+@keyframes fall{
+    to{
+        transform:translateY(100vh);
+        opacity:0;
     }
-    h1{ font-size:32px; }
-    input{ font-size:16px; width:80%; }
-    button{ font-size:16px; padding:10px 25px; }
-}
-
-/* PC / Large screens (>1024px) */
-@media (min-width:1025px){
-    .container{
-        padding:60px 100px;
-        max-width:800px;
-    }
-    h1{ font-size:42px; }
-    input{ font-size:18px; width:70%; }
-    button{ font-size:18px; padding:12px 30px; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="cursor" id="cursor"></div>
-
 <div class="container">
-    <h1 id="question">Do you love me ( Rajin )? 💖</h1>
-    <input type="text" id="nameInput" placeholder="Enter your name 😏">
-    <br>
-    <button id="yes">Yes ❤️</button>
-
-    <div class="meter">
-        <div class="fill" id="loveFill"></div>
-    </div>
+    <h1>Love Bond 💖</h1>
+    <input id="name1" placeholder="Your Name">
+    <input id="name2" placeholder="Your Partner Name">
+    <button onclick="calculateLove()">Calculate</button>
+    <div id="result"></div>
 </div>
 
-<button id="no">No 😜</button>
-
 <script>
-const noBtn = document.getElementById("no");
-const yesBtn = document.getElementById("yes");
-const fill = document.getElementById("loveFill");
-const question = document.getElementById("question");
-const nameInput = document.getElementById("nameInput");
 
-// Runaway "No" button
-function moveButton(){
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+// ❤️ heart animation
+function createHeart(){
+    const h=document.createElement("div");
+    h.innerHTML="❤️";
+    h.className="heart";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=(Math.random()*2+3)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),4000);
 }
-noBtn.addEventListener("mouseover", moveButton);
-noBtn.addEventListener("touchstart", moveButton);
 
-// Yes button action
-yesBtn.addEventListener("click", function(){
-    const name = nameInput.value || "Someone Special";
-    question.innerHTML = `💘 Really !!! I can't believe it. 🥹 ${name}, every heartbeat whispers your name… 💖<br>
-    🌹 The stars envy our love, and the moon smiles for us… 🌙<br>
-    💘 My world is brighter because of you! 😌`;
-    fill.style.width = "100%";
+// 📊 send data to Google Sheets
+async function saveToSheet(n1, n2, percent){
+    try{
+        await fetch("https://script.google.com/macros/s/AKfycbwqPMW3JxKDq2Y2GokEuptumjN1HfTfusBuhK8O-dp_aQX9wIGWO1RevYdZQUw4BWQ-kQ/exec", {
+            method: "POST",
+            body: JSON.stringify({
+                name1: n1,
+                name2: n2,
+                percent: percent
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+    }catch(e){
+        console.log("Sheet error:", e);
+    }
+}
 
-    // Confetti animation
-    confetti({
-        particleCount:150,
-        spread:100,
-        origin:{ y:0.6 }
-    });
+// 💖 main function
+async function calculateLove(){
 
-    // Floating hearts animation (Bigger, cinematic)
-    for(let i=0;i<30;i++){
-        const heart = document.createElement("div");
-        heart.innerHTML = "❤️";
-        heart.style.position = "absolute";
-        heart.style.left = Math.random() * window.innerWidth + "px";
-        heart.style.top = window.innerHeight + "px";
-        const size = 30 + Math.random()*50; // 30px–80px
-        heart.style.fontSize = size + "px";
-        heart.style.transform = `rotate(${Math.random()*360}deg)`;
-        heart.style.opacity = 1;
-        heart.style.transition = "all 3s ease-out";
-        document.body.appendChild(heart);
-        setTimeout(()=>{
-            heart.style.top = (Math.random() * window.innerHeight/2) + "px";
-            heart.style.opacity = 0;
-        }, 50);
-        setTimeout(()=>heart.remove(), 3000);
+    let n1=document.getElementById("name1").value.trim();
+    let n2=document.getElementById("name2").value.trim();
+
+    if(!n1 || !n2){
+        alert("Enter both names!");
+        return;
     }
 
-    // Background gradient animation
-    let colors = ["#ff758c","#ff7eb3","#ff9a9e","#fad0c4"];
-    let i = 0;
-    setInterval(()=>{
-        document.body.style.background = `linear-gradient(135deg,${colors[i]},${colors[(i+1)%colors.length]})`;
-        i = (i+1)%colors.length;
-    }, 2000);
-});
+    let combined=[n1.toLowerCase(),n2.toLowerCase()].sort().join("");
+    let hash=0;
 
-// Cursor glow
-const cursor = document.getElementById("cursor");
-document.addEventListener("mousemove", e=>{
-    cursor.style.left = e.pageX + "px";
-    cursor.style.top = e.pageY + "px";
-});
+    for(let i=0;i<combined.length;i++){
+        hash+=combined.charCodeAt(i)*(i+1);
+    }
+
+    let percent=(hash%61)+40;
+
+    let result=document.getElementById("result");
+    result.innerHTML=`<span class="percent" id="num">0%</span>`;
+
+    let c=0;
+    let interval=setInterval(async ()=>{
+        if(c>=percent){
+            clearInterval(interval);
+
+            showMessage(percent);
+
+            // 📊 save to Google Sheets
+            await saveToSheet(n1, n2, percent);
+
+            for(let i=0;i<30;i++) setTimeout(createHeart,i*100);
+        }else{
+            c++;
+            document.getElementById("num").innerText=c+"%";
+        }
+    },25);
+}
+
+// 💬 message
+function showMessage(p){
+    let msg="";
+
+    if(p>90) msg="Perfect Match 💞";
+    else if(p>75) msg="Great Connection ✨";
+    else if(p>60) msg="Good Bond 🔥";
+    else msg="Keep Trying 😅";
+
+    let d=document.createElement("div");
+    d.innerText=msg;
+    d.style.marginTop="10px";
+    document.getElementById("result").appendChild(d);
+}
+
 </script>
 
 </body>
 </html>
-
-
