@@ -109,7 +109,7 @@ function createHeart(){
 // 📊 send data to Google Sheets
 async function saveToSheet(n1, n2, percent){
     try{
-        await fetch("https://script.google.com/macros/s/AKfycbwqPMW3JxKDq2Y2GokEuptumjN1HfTfusBuhK8O-dp_aQX9wIGWO1RevYdZQUw4BWQ-kQ/exec", {
+        await fetch("https://script.google.com/macros/s/AKfycbwwaIyGerOBbbkroYg6uLlTITGLw8Cm4v7CEirtVxmDyW7LPSO22PosOd405U7RwBBU/exec", {
             method: "POST",
             body: JSON.stringify({
                 name1: n1,
