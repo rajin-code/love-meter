@@ -418,7 +418,9 @@ h1 {
     font-size: 0.9rem;
 }
 
-/* No Button Escape Logic */
+.love-card {
+    position: relative;
+}
 #noBtn {
     position: relative;
     transition: all 0.2s ease;
@@ -449,6 +451,11 @@ h1 {
 </style>
 </head>
 <body>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop autoplay>
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
 
 <div class="custom-cursor" id="cursor"></div>
 <div id="cursorTrail"></div>
@@ -524,29 +531,40 @@ const questionText = document.getElementById('questionText');
 const nameInput = document.getElementById('nameInput');
 const responseMessage = document.getElementById('responseMessage');
 
+const bgMusic = document.getElementById("bgMusic");
+
+
+document.body.addEventListener("click", () => {
+    bgMusic.play().catch(() => {});
+},{once:true});
+
 
 let escapeCount = 0;
 
 function getRandomPosition() {
+    const card = document.querySelector('.love-card');
+    const cardRect = card.getBoundingClientRect();
     const btnRect = noBtn.getBoundingClientRect();
-    const maxX = window.innerWidth - btnRect.width - 30;
-    const maxY = window.innerHeight - btnRect.height - 100;
-    const minX = 30;
-    const minY = 80;
-    
+
+    const padding = 10;
+
+    const maxX = cardRect.width - btnRect.width - padding;
+    const maxY = cardRect.height - btnRect.height - padding;
+
+    const minX = padding;
+    const minY = padding;
+
     let x = Math.random() * (maxX - minX) + minX;
     let y = Math.random() * (maxY - minY) + minY;
-    
-    x = Math.min(Math.max(x, minX), maxX);
-    y = Math.min(Math.max(y, minY), maxY);
-    
+
     return { x, y };
 }
-
 function moveNoButton() {
     if (escapeCount < 8) {
         const pos = getRandomPosition();
-        noBtn.style.position = 'fixed';
+        noBtn.style.position = 'absolute';
+	noBtn.style.right = 'auto';
+	noBtn.style.bottom = 'auto';
         noBtn.style.left = pos.x + 'px';
         noBtn.style.top = pos.y + 'px';
         noBtn.style.zIndex = '1000';
@@ -638,7 +656,13 @@ function burstConfetti() {
 
 
 yesBtn.addEventListener('click', function() {
-    const userName = nameInput.value.trim() || 'My Love';
+    // 🚨 Add this first
+    if (!nameInput.value.trim()) {
+        alert("Please enter your name first 😊");
+        return;
+    }
+
+    const userName = nameInput.value.trim();
     
 
     loveFill.style.width = '100%';
