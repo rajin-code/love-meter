@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Love Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>  Love Sync 💕 </title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,177 +11,754 @@
 
 
 <style>
-:root {
-    --primary: #ff3366;
-    --secondary: #ff85a2;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    margin:0;
-    font-family:'Poppins',sans-serif;
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(to bottom,#ff4e50,#fc913a);
-    overflow:hidden;
-    color:white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    overflow-x: hidden;
+    position: relative;
+    transition: background 0.5s ease;
 }
 
-.container{
-    background:rgba(255,255,255,0.12);
-    backdrop-filter:blur(25px);
-    padding:40px;
-    border-radius:30px;
-    text-align:center;
-    width:90%;
-    max-width:400px;
+/* Animated background particles */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 2px, transparent 2px),
+        radial-gradient(circle at 80% 80%, rgba(255,200,200,0.1) 1px, transparent 1px);
+    background-size: 50px 50px, 30px 30px;
+    pointer-events: none;
+    z-index: 0;
 }
 
-h1{
-    font-family:'Dancing Script',cursive;
-    font-size:2.5rem;
+/* Floating hearts animation */
+.floating-heart {
+    position: fixed;
+    pointer-events: none;
+    font-size: 20px;
+    animation: floatUp 6s ease-in forwards;
+    z-index: 999;
 }
 
-input{
-    width:100%;
-    padding:12px;
-    margin:10px 0;
-    border:none;
-    border-bottom:2px solid rgba(255,255,255,0.3);
-    background:transparent;
-    color:white;
-    text-align:center;
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-20vh) rotate(360deg);
+        opacity: 0;
+    }
 }
 
-button{
-    margin-top:15px;
-    padding:12px 30px;
-    border:none;
-    border-radius:30px;
-    background:linear-gradient(45deg,var(--primary),var(--secondary));
-    color:white;
-    cursor:pointer;
+/* Custom Cursor */
+.custom-cursor {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    background: radial-gradient(circle, #ff6b9d, #ff3b6f);
+    box-shadow: 0 0 20px rgba(255,59,111,0.6);
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    transition: transform 0.1s ease;
+    mix-blend-mode: screen;
 }
 
-.percent{
-    font-size:3rem;
-    color:#ffeb3b;
+.cursor-trail {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    background: rgba(255,107,157,0.5);
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: 0.05s;
 }
 
-.heart{
-    position:absolute;
-    animation:fall linear forwards;
+/* Header Styles */
+.creative-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(20px);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
-@keyframes fall{
-    to{
-        transform:translateY(100vh);
-        opacity:0;
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #ff6b9d, #ff3b6f);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 5px 15px rgba(255,59,111,0.4);
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff, #ffe6f0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.dev-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0,0,0,0.3);
+    padding: 8px 18px;
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+}
+
+.dev-badge span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+.my-power {
+    background: linear-gradient(135deg, #FFD166, #FF6B6B, #C084FC);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; text-shadow: 0 0 5px rgba(255,107,107,0.5); }
+}
+
+/* Main Container */
+.main-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 20px 80px;
+    position: relative;
+    z-index: 2;
+}
+
+.love-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 48px;
+    padding: 35px 30px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: transform 0.3s ease;
+}
+
+.love-card:hover {
+    transform: translateY(-5px);
+}
+
+.heart-icon {
+    font-size: 65px;
+    animation: heartbeat 1.2s ease-in-out infinite;
+    display: inline-block;
+    filter: drop-shadow(0 5px 15px rgba(255,59,111,0.5));
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.2rem;
+    margin: 15px 0 10px;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+}
+
+.question-text {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 25px;
+}
+
+/* Input Group */
+.input-group {
+    margin: 25px 0;
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+}
+
+.love-input {
+    width: 100%;
+    padding: 14px 20px 14px 50px;
+    border: none;
+    border-radius: 60px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(5px);
+    font-size: 1rem;
+    color: white;
+    outline: none;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.love-input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.love-input:focus {
+    background: rgba(255,255,255,0.3);
+    box-shadow: 0 0 0 3px rgba(255,107,157,0.5);
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.love-btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.love-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.love-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-yes {
+    background: linear-gradient(135deg, #ff6b9d, #ff3b6f);
+    color: white;
+    box-shadow: 0 5px 20px rgba(255,59,111,0.4);
+}
+
+.btn-yes:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255,59,111,0.6);
+}
+
+.btn-no {
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    position: relative;
+    z-index: 10;
+}
+
+.btn-no:hover {
+    background: rgba(0,0,0,0.7);
+    transform: scale(1.05);
+}
+
+/* Love Meter */
+.meter-container {
+    margin-top: 30px;
+}
+
+.meter-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 8px;
+}
+
+.meter-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.meter-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff6b9d, #ff3b6f, #ff9a9e);
+    border-radius: 20px;
+    transition: width 1.2s cubic-bezier(0.34, 1.2, 0.64, 1);
+    position: relative;
+    box-shadow: 0 0 10px #ff3b6f;
+}
+
+/* Response Message */
+.response-message {
+    margin-top: 25px;
+    padding: 20px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 24px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: white;
+    display: none;
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Footer */
+.creative-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(15px);
+    padding: 12px 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    z-index: 1000;
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.footer-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.8rem;
+}
+
+.my-footer {
+    font-weight: 800;
+    background: linear-gradient(135deg, #FFD166, #FF6B6B);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 0.9rem;
+}
+
+/* No Button Escape Logic */
+#noBtn {
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Responsive */
+@media (max-width: 550px) {
+    .creative-header {
+        padding: 12px 20px;
+    }
+    .logo-text {
+        font-size: 1.1rem;
+    }
+    .dev-badge span {
+        font-size: 0.7rem;
+    }
+    .love-card {
+        padding: 25px 20px;
+    }
+    h1 {
+        font-size: 1.6rem;
+    }
+    .love-btn {
+        padding: 10px 24px;
+        font-size: 0.9rem;
     }
 }
 </style>
 </head>
-
 <body>
 
-<div class="container">
-    <h1>Love Bond 💖</h1>
-    <input id="name1" placeholder="Your Name">
-    <input id="name2" placeholder="Your Partner Name">
-    <button onclick="calculateLove()">Calculate</button>
-    <div id="result"></div>
+<div class="custom-cursor" id="cursor"></div>
+<div id="cursorTrail"></div>
+
+<header class="creative-header">
+    <div class="header-logo">
+        <div class="logo-icon">💕</div>
+        <span class="logo-text">Love-Meter</span>
+    </div>
+    <div class="dev-badge">
+        <span>CyberTaskForce</span>
+        <span class="my-power">Development Authority</span>
+    </div>
+</header>
+
+<div class="main-container">
+    <div class="love-card">
+        <div class="heart-icon">💖</div>
+        <h1 id="questionText">Do you love me?</h1>
+        <p class="question-text">Be honest, your heart knows the answer ✨</p>
+        
+        <div class="input-group">
+            <span class="input-icon">💌</span>
+            <input type="text" id="nameInput" class="love-input" placeholder="Enter your name...">
+        </div>
+        
+        <div class="button-group">
+            <button class="love-btn btn-yes" id="yesBtn">
+                <span>❤️</span> Yes, I do!
+            </button>
+            <button class="love-btn btn-no" id="noBtn">
+                <span>😅</span> Not yet...
+            </button>
+        </div>
+        
+        <div class="meter-container">
+            <div class="meter-label">
+                <span>💕 Love Intensity</span>
+                <span id="lovePercent">0%</span>
+            </div>
+            <div class="meter-bar">
+                <div class="meter-fill" id="loveFill"></div>
+            </div>
+        </div>
+        
+        <div class="response-message" id="responseMessage">
+            💝 Your love story begins here...
+        </div>
+    </div>
 </div>
+
+<footer class="creative-footer">
+    <div class="footer-text">
+        <span>✨ Created By</span>
+        <strong style="color:#ff9a9e;">R H Rajin</strong>
+    </div>
+    <div class="footer-text">
+        <span>🤝 Co-powered by</span>
+        <span class="my-footer">CyberTaskForce</span>
+    </div>
+    <div class="footer-text">
+        <span>💫 Love Sync v1.0</span>
+    </div>
+</footer>
 
 <script>
 
-// ❤️ heart animation
-function createHeart(){
-    const h=document.createElement("div");
-    h.innerHTML="❤️";
-    h.className="heart";
-    h.style.left=Math.random()*100+"vw";
-    h.style.animationDuration=(Math.random()*2+3)+"s";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),4000);
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const loveFill = document.getElementById('loveFill');
+const lovePercent = document.getElementById('lovePercent');
+const questionText = document.getElementById('questionText');
+const nameInput = document.getElementById('nameInput');
+const responseMessage = document.getElementById('responseMessage');
+
+
+let escapeCount = 0;
+
+function getRandomPosition() {
+    const btnRect = noBtn.getBoundingClientRect();
+    const maxX = window.innerWidth - btnRect.width - 30;
+    const maxY = window.innerHeight - btnRect.height - 100;
+    const minX = 30;
+    const minY = 80;
+    
+    let x = Math.random() * (maxX - minX) + minX;
+    let y = Math.random() * (maxY - minY) + minY;
+    
+    x = Math.min(Math.max(x, minX), maxX);
+    y = Math.min(Math.max(y, minY), maxY);
+    
+    return { x, y };
 }
 
-// 📊 send data to Google Sheets
-async function saveToSheet(n1, n2, percent){
-    try{
-        await fetch("https://script.google.com/macros/s/AKfycbwwaIyGerOBbbkroYg6uLlTITGLw8Cm4v7CEirtVxmDyW7LPSO22PosOd405U7RwBBU/exec", {
-            method: "POST",
-            body: JSON.stringify({
-                name1: n1,
-                name2: n2,
-                percent: percent
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-    }catch(e){
-        console.log("Sheet error:", e);
-    }
-}
+function moveNoButton() {
+    if (escapeCount < 8) {
+        const pos = getRandomPosition();
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = pos.x + 'px';
+        noBtn.style.top = pos.y + 'px';
+        noBtn.style.zIndex = '1000';
+        escapeCount++;
+        
 
-// 💖 main function
-async function calculateLove(){
+        noBtn.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            noBtn.style.transform = 'scale(1)';
+        }, 100);
+    } else {
 
-    let n1=document.getElementById("name1").value.trim();
-    let n2=document.getElementById("name2").value.trim();
+        noBtn.style.opacity = '0';
+        noBtn.style.pointerEvents = 'none';
+        setTimeout(() => {
+            noBtn.style.display = 'none';
+        }, 300);
+        
 
-    if(!n1 || !n2){
-        alert("Enter both names!");
-        return;
-    }
-
-    let combined=[n1.toLowerCase(),n2.toLowerCase()].sort().join("");
-    let hash=0;
-
-    for(let i=0;i<combined.length;i++){
-        hash+=combined.charCodeAt(i)*(i+1);
-    }
-
-    let percent=(hash%61)+40;
-
-    let result=document.getElementById("result");
-    result.innerHTML=`<span class="percent" id="num">0%</span>`;
-
-    let c=0;
-    let interval=setInterval(async ()=>{
-        if(c>=percent){
-            clearInterval(interval);
-
-            showMessage(percent);
-
-            // 📊 save to Google Sheets
-            await saveToSheet(n1, n2, percent);
-
-            for(let i=0;i<30;i++) setTimeout(createHeart,i*100);
-        }else{
-            c++;
-            document.getElementById("num").innerText=c+"%";
+        if (escapeCount === 8) {
+            const hint = document.createElement('div');
+            hint.textContent = '💕 Looks like your heart knows the answer! 💕';
+            hint.style.position = 'fixed';
+            hint.style.bottom = '100px';
+            hint.style.left = '50%';
+            hint.style.transform = 'translateX(-50%)';
+            hint.style.background = 'rgba(0,0,0,0.7)';
+            hint.style.backdropFilter = 'blur(10px)';
+            hint.style.padding = '10px 20px';
+            hint.style.borderRadius = '50px';
+            hint.style.color = 'white';
+            hint.style.zIndex = '2000';
+            hint.style.fontSize = '0.9rem';
+            hint.style.animation = 'fadeInUp 0.5s ease';
+            document.body.appendChild(hint);
+            setTimeout(() => hint.remove(), 3000);
         }
-    },25);
+    }
 }
 
-// 💬 message
-function showMessage(p){
-    let msg="";
+noBtn.addEventListener('mouseenter', moveNoButton);
+noBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    moveNoButton();
+});
 
-    if(p>90) msg="Perfect Match 💞";
-    else if(p>75) msg="Great Connection ✨";
-    else if(p>60) msg="Good Bond 🔥";
-    else msg="Keep Trying 😅";
 
-    let d=document.createElement("div");
-    d.innerText=msg;
-    d.style.marginTop="10px";
-    document.getElementById("result").appendChild(d);
+function createFloatingHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'floating-heart';
+    heart.innerHTML = ['❤️‍🔥', '💖', '😘', '💓', '🔥', '💘', '💝'][Math.floor(Math.random() * 7)];
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.fontSize = (20 + Math.random() * 30) + 'px';
+    heart.style.animationDuration = (4 + Math.random() * 4) + 's';
+    heart.style.opacity = 0.6 + Math.random() * 0.4;
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
 }
 
+
+function burstConfetti() {
+    canvasConfetti({
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.6 },
+        colors: ['#ff6b9d', '#ff3b6f', '#ff9a9e', '#ffb6c1']
+    });
+    
+    setTimeout(() => {
+        canvasConfetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.5, x: 0.3 },
+            colors: ['#ff6b9d', '#ff3b6f']
+        });
+        canvasConfetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.5, x: 0.7 },
+            colors: ['#ff9a9e', '#ffb6c1']
+        });
+    }, 150);
+    
+
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => createFloatingHeart(), i * 50);
+    }
+}
+
+
+yesBtn.addEventListener('click', function() {
+    const userName = nameInput.value.trim() || 'My Love';
+    
+
+    loveFill.style.width = '100%';
+    lovePercent.textContent = '100%';
+    
+
+    const romanticMessages = [
+        `💘 ${userName}, you just made my heart skip a beat! Every moment with you is magical. 🌹`,
+        `✨ ${userName}, your love completes my world. Together we're unstoppable! 💫`,
+        `🌙 ${userName}, the stars shine brighter because you're in my life. Forever grateful! 💕`,
+        `🌸 ${userName}, you're the reason my heart beats. This is the beginning of our beautiful journey! 💖`,
+        `🎀 ${userName}, your love is the greatest gift. I'm the luckiest person alive! 🎁`
+    ];
+    
+    const randomMsg = romanticMessages[Math.floor(Math.random() * romanticMessages.length)];
+    responseMessage.style.display = 'block';
+    responseMessage.innerHTML = `
+        <div style="text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 10px;">💗💗💗</div>
+            <p style="font-weight: 600; margin-bottom: 10px;">${randomMsg}</p>
+            <p style="font-size: 0.85rem; opacity: 0.9;">🌹 You've unlocked unlimited love! 🌹</p>
+        </div>
+    `;
+    
+
+    questionText.innerHTML = `${userName} ❤️ My Heart Belongs to You!`;
+    
+
+    let colors = ['#ff6b9d', '#ff3b6f', '#ff9a9e', '#fbc2eb', '#a18cd1'];
+    let i = 0;
+    const bgInterval = setInterval(() => {
+        document.body.style.background = `linear-gradient(135deg, ${colors[i % colors.length]}, ${colors[(i+1) % colors.length]}, ${colors[(i+2) % colors.length]})`;
+        i++;
+        if (i > 20) clearInterval(bgInterval);
+    }, 800);
+    
+
+    burstConfetti();
+    
+
+    for (let i = 0; i < 80; i++) {
+        setTimeout(() => createFloatingHeart(), i * 30);
+    }
+    
+
+    noBtn.style.opacity = '0.5';
+    noBtn.style.pointerEvents = 'none';
+    noBtn.style.transition = '0.3s';
+    
+
+    const card = document.querySelector('.love-card');
+    card.style.boxShadow = '0 0 50px rgba(255,59,111,0.5)';
+    
+
+    setTimeout(() => {
+        canvasConfetti({
+            particleCount: 300,
+            spread: 120,
+            origin: { y: 0.7 },
+            startVelocity: 20,
+            colors: ['#ff6b9d', '#ff3b6f', '#ff9a9e', '#ffd6e0']
+        });
+    }, 500);
+});
+
+
+const cursor = document.getElementById('cursor');
+const trailContainer = document.getElementById('cursorTrail');
+let trailPositions = [];
+
+document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    
+
+    const trail = document.createElement('div');
+    trail.className = 'cursor-trail';
+    trail.style.left = e.clientX + 'px';
+    trail.style.top = e.clientY + 'px';
+    document.body.appendChild(trail);
+    
+    setTimeout(() => {
+        trail.style.opacity = '0';
+        setTimeout(() => trail.remove(), 200);
+    }, 100);
+});
+
+
+setInterval(() => {
+    if (Math.random() > 0.7) {
+        createFloatingHeart();
+    }
+}, 2000);
+
+
+nameInput.addEventListener('input', function() {
+    const nameLength = this.value.length;
+    if (nameLength > 0 && loveFill.style.width !== '100%') {
+        let loveValue = Math.min(30 + nameLength * 3, 70);
+        loveFill.style.width = loveValue + '%';
+        lovePercent.textContent = loveValue + '%';
+    }
+});
+
+
+window.addEventListener('resize', () => {
+    if (noBtn.style.position === 'fixed') {
+        const pos = getRandomPosition();
+        noBtn.style.left = pos.x + 'px';
+        noBtn.style.top = pos.y + 'px';
+    }
+});
+
+
+for (let i = 0; i < 15; i++) {
+    setTimeout(() => createFloatingHeart(), i * 200);
+}
+
+console.log('%c💕 Love Meter v1.0 | Powered by CyberTaskForce Development Authority 💕', 'color: #ff6b9d; font-size: 14px; font-weight: bold;');
+console.log('%c✨ Created with love by Raisul Hasan Rajin ✨', 'color: #ff9a9e; font-size: 12px;');
 </script>
-
 </body>
 </html>
